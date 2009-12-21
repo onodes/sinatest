@@ -4,9 +4,9 @@ require 'net/irc'
 require 'haml'
 
 
-#get '/' do
-#  'Hello world!'
-#end
+get '/' do
+  'Hello world!'
+end
 
 
 get '/fuck/:name' do
@@ -29,12 +29,14 @@ get '/download/*.*' do
   params[:splat] # => ["path/to/file", "xml"]
 end
 
-get '/' do
-  haml :index
-end
+#get '/' do
+#  haml :index
+#end
 
 get '/irc' do
-  
+  "hello irc"
+end
+
 class Client < Net::IRC::Client
   def initialize(*args)
     super
@@ -42,11 +44,11 @@ class Client < Net::IRC::Client
 end
 
 Client.new("esp.jpn.ph", "6668", {
-  :nick => "7log"
-  :user => "7log"
-  :real => "7log"
+  :nick => "h7log",
+  :user => "h7log",
+  :real => "h7log",
 }).start
 
 
 #set :public, File.dirname(__FILE__) + '/static'
-#set :views,  File.dirname(__FILE__) + '/templates'
+set :views,  File.dirname(__FILE__) + '/templates'
