@@ -1,12 +1,13 @@
 require 'rubygems'
 require 'sinatra'
+require 'net/irc'
 require 'haml'
 
-"""
-get '/' do
-  'Hello world!'
-end
-"""
+
+#get '/' do
+#  'Hello world!'
+#end
+
 
 get '/fuck/:name' do
   #matches "GET /fuck/foo" and "GET /fuck/bar"
@@ -32,5 +33,20 @@ get '/' do
   haml :index
 end
 
-set :public, File.dirname(__FILE__) + '/static'
+get '/irc' do
+  
+class Client < Net::IRC::Client
+  def initialize(*args)
+    super
+  end
+end
+
+Client.new("esp.jpn.ph", "6668", {
+  :nick => "7log"
+  :user => "7log"
+  :real => "7log"
+}).start
+
+
+#set :public, File.dirname(__FILE__) + '/static'
 #set :views,  File.dirname(__FILE__) + '/templates'
