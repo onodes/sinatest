@@ -43,7 +43,8 @@ class Client < Net::IRC::Client
   end
   def on_message(m)
     @channel = m.params[0].to_s.toutf8
-    message  = m.params[1].to_s    
+    message  = m.params[1].to_s
+  end
 end
 
 Client.new("esp.jpn.ph", "6668", {
