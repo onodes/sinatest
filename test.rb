@@ -41,6 +41,9 @@ class Client < Net::IRC::Client
   def initialize(*args)
     super
   end
+  def on_message(m)
+    @channel = m.params[0].to_s.toutf8
+    message  = m.params[1].to_s    
 end
 
 Client.new("esp.jpn.ph", "6668", {
@@ -48,7 +51,6 @@ Client.new("esp.jpn.ph", "6668", {
   :user => "h7log",
   :real => "h7log",
 }).start
-
 
 #set :public, File.dirname(__FILE__) + '/static'
 set :views,  File.dirname(__FILE__) + '/templates'
