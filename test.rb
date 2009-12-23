@@ -1,8 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'net/irc'
+require 'kconv'
 require 'haml'
-
+require 'yaml'
 
 get '/' do
   'Hello world!'
@@ -38,20 +39,38 @@ get '/irc' do
 end
 
 class Client < Net::IRC::Client
-  def initialize(*args)
-    super
+
+  def on_nick(m)
+    nick = m.params[0].to_s
+    p nick.toutf8
   end
+
   def on_message(m)
     @channel = m.params[0].to_s.toutf8
-    message  = m.params[1].to_s
+    message  = m.params[1].to_s.toutf8
+
+    #hask key for message[time_key, nick]
+    time_key = Time.now
+
+    file = File.open('irclog.yml','w')
+    log_message = m.prefix.nick + " : " + message
+    YAML.dump(log_message,file)
+    file.close
+    p m.params
+  end
+
+  def on_rpl_welcome(m)
+    post JOIN, opts.channel
   end
 end
 
-Client.new("esp.jpn.ph", "6668", {
-  :nick => "h7log",
+client = Client.new("localhost", 6668,
+ {:nick => "h7log",
   :user => "h7log",
   :real => "h7log",
-}).start
+  :channel => "#test"}
+)
+client.start
 
 #set :public, File.dirname(__FILE__) + '/static'
 set :views,  File.dirname(__FILE__) + '/templates'
