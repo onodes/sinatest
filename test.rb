@@ -49,13 +49,21 @@ class Client < Net::IRC::Client
     @channel = m.params[0].to_s.toutf8
     message  = m.params[1].to_s.toutf8
 
-    #hask key for message[time_key, nick]
-    time_key = Time.now
+    #hash key for message[message_key]
+    time_key = Time.now.to_s
+    message_key = "(" + time_key + ")" + ":" + m.prefix.nick
 
-    file = File.open('irclog.yml','w')
-    log_message = m.prefix.nick + " : " + message
+    #open irclog.yml
+    file = File.open('irclog.yml','a')
+    
+    #initialize log_message(hash)
+    log_message = {}
+
+    ##log format = (time.now) nick : message
+    log_message[message_key] = message
     YAML.dump(log_message,file)
     file.close
+
     p m.params
   end
 
