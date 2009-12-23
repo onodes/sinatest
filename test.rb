@@ -4,6 +4,7 @@ require 'net/irc'
 require 'kconv'
 require 'haml'
 require 'yaml'
+require 'yaml_waml'
 
 get '/' do
   'Hello world!'
