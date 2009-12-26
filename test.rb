@@ -1,3 +1,4 @@
+$KCODE = 'u'
 require 'rubygems'
 require 'sinatra'
 require 'net/irc'
@@ -36,13 +37,20 @@ end
 #end
 
 get '/irc' do
-  "hello irc"
+  file = YAML.load_file("irclog.yml")
+  p file
+end
+
+class String
+  def is_binary_data?
+    false
+  end
 end
 
 class Client < Net::IRC::Client
 
   def on_nick(m)
-    nick = m.params[0].to_s
+    nick = m.params[0].to_s.toutf8
     p nick.toutf8
   end
 
@@ -61,7 +69,9 @@ class Client < Net::IRC::Client
     log_message = {}
 
     ##log format = (time.now) nick : message
-    log_message[message_key] = message
+    log_message[message_key] = message.toutf8
+    log_message.to_yaml
+    p log_message
     YAML.dump(log_message,file)
     file.close
 
@@ -73,7 +83,7 @@ class Client < Net::IRC::Client
   end
 end
 
-client = Client.new("localhost", 6668,
+client = Client.new("esp.jpn.ph", 6668,
  {:nick => "h7log",
   :user => "h7log",
   :real => "h7log",
