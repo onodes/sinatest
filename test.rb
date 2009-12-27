@@ -65,7 +65,7 @@ class Client < Net::IRC::Client
     #open irclog.yml
     file = File.open('irclog.yml','a')
     
-    #initialize log_message(hash)
+    #initialize log_message(hash).
     log_message = {}
 
     ##log format = (time.now) nick : message
