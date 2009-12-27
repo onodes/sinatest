@@ -68,7 +68,7 @@ class Client < Net::IRC::Client
     #initialize log_message(hash).
     log_message = {}
 
-    ##log format = (time.now) nick : message
+    ##log format = (time.now) nick : message.
     log_message[message_key] = message.toutf8
     log_message.to_yaml
     p log_message
